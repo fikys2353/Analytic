@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нейросетевое задание — Практика</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito', sans-serif; }
+        body { background: #F8FCFF; color: #333; padding: 2rem; }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: white; 
+            border-radius: 24px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.06); 
+            overflow: hidden;
+            position: relative;
+        }
+        header { 
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white; 
+            padding: 1.5rem 2rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 1rem; 
+        }
+        header i { 
+            font-size: 2rem; 
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        header h1 { font-size: 1.8rem; font-weight: 600; }
+        .content { padding: 2rem; }
+        .task-box { 
+            background: #f0f4ff; 
+            border-left: 4px solid #6a11cb; 
+            padding: 1.5rem; 
+            border-radius: 0 12px 12px 0; 
+            margin-bottom: 2rem; 
+        }
+        .task-box h2 { 
+            color: #6a11cb; 
+            margin-bottom: 1rem; 
+            font-size: 1.5rem; 
+        }
+        .ai-simulator {
+            background: #f8f9ff;
+            border: 2px dashed #d0d8ff;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        .ai-simulator::before {
+            content: "🧠 Нейросеть анализирует...";
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 0 10px;
+            color: #6a11cb;
+            font-weight: 600;
+        }
+        .prediction { 
+            font-size: 1.8rem; 
+            font-weight: 700; 
+            color: #6a11cb; 
+            margin: 1rem 0;
+        }
+        .confidence { 
+            display: inline-block;
+            background: #e6e9ff;
+            color: #6a11cb;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .solution { margin-top: 2rem; }
+        .solution h3 { 
+            font-size: 1.4rem; 
+            color: #6a11cb; 
+            margin-bottom: 1rem; 
+        }
+        .btn { 
+            display: inline-block; 
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white; 
+            padding: 12px 30px; 
+            border-radius: 50px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            margin-top: 2rem; 
+            transition: all 0.3s; 
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        }
+        .btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(106, 17, 203, 0.4);
+        }
+        .back-link { 
+            display: inline-block; 
+            color: #6a11cb; 
+            margin-bottom: 1.5rem; 
+            text-decoration: none; 
+        }
+        .back-link i { margin-right: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <i class="fas fa-brain"></i>
+            <h1>Умный симулятор (нейросеть)</h1>
+        </header>
+
+        <div class="content">
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Назад к выбору</a>
+
+            <div class="task-box">
+                <h2>Задание</h2>
+                <p>Нейросеть анализирует поведение акций Tesla за последние 5 лет. На основе текущих показателей (объёмы, новости, рыночные тренды) она строит прогноз на следующий квартал.</p>
+                <p><strong>Вопрос:</strong> Какой прогноз даёт нейросеть?</p>
+            </div>
+
+            <div class="ai-simulator">
+                <div class="prediction">📈 +18.7%</div>
+                <div class="confidence">Доверие: 87%</div>
+                <p>Прогноз сформирован на основе 12 450 данных</p>
+                <small>Нейросеть обновляет прогноз каждые 6 часов</small>
+            </div>
+
+            <div class="solution">
+                <h3>Как это работает?</h3>
+                <p>Нейросеть обрабатывает:</p>
+                <p>• Новости и события<br>
+                • Исторические цены<br>
+                • Макроэкономические индикаторы<br>
+                • Социальные сигналы (Twitter, Reddit)</p>
+                <p>✅ Прогноз не гарантирует прибыль, но показывает вероятное направление движения.</p>
+            </div>
+
+            <a href="#" class="btn">Следующее задание</a>
+        </div>
+    </div>
+</body>
+</html>

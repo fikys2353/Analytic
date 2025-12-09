@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задание пройдено!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito', sans-serif; }
+        body { background: #F8FCFF; color: #333; padding: 2rem; }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.06); overflow: hidden; text-align: center; }
+        header { background: #28a745; color: white; padding: 2rem; }
+        header i { font-size: 3rem; margin-bottom: 1rem; }
+        header h1 { font-size: 2rem; font-weight: 600; }
+        .content { padding: 3rem 2rem; }
+        .celebration { font-size: 5rem; margin-bottom: 1.5rem; }
+        .message { font-size: 1.3rem; color: #444; margin-bottom: 2rem; }
+        .btn { 
+            display: inline-block; 
+            background: #007BFF; 
+            color: white; 
+            padding: 14px 40px; 
+            border-radius: 50px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            margin-top: 1rem; 
+            transition: all 0.3s; 
+            box-shadow: 0 5px 15px rgba(0,123,255,0.2);
+            font-size: 1.1rem;
+        }
+        .btn:hover { 
+            background: #0056b3; 
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,123,255,0.3);
+        }
+        .back-link {
+            display: inline-block;
+            color: #007BFF;
+            margin-top: 1.5rem;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <i class="fas fa-check-circle"></i>
+            <h1>Отличная работа!</h1>
+        </header>
+
+        <div class="content">
+            <div class="celebration">🎉</div>
+            <p class="message">Вы успешно решили задание и получили ценный исторический инсайт.</p>
+            
+            <a href="tasks-list.html" id="continueBtn" class="btn">Продолжить обучение</a>
+            <a href="../index.html" class="back-link"><i class="fas fa-home"></i> Вернуться на главную</a>
+        </div>
+    </div>
+
+    <script>
+        // Определяем, какое задание пройдено, и обновляем прогресс
+        document.addEventListener('DOMContentLoaded', () => {
+            // Получаем текущий прогресс
+            let progress = parseInt(localStorage.getItem('historyTasksProgress') || '0');
+            const newProgress = Math.min(progress + 1, 3); // максимум 3
+
+            // Сохраняем
+            localStorage.setItem('historyTasksProgress', newProgress.toString());
+
+            // Добавляем лёгкую анимацию
+            document.querySelector('.celebration').style.animation = 'bounce 1s ease';
+            
+            // Через 1.5 сек — обновляем кнопку (для плавности)
+            setTimeout(() => {
+                document.getElementById('continueBtn').innerText = 'К списку заданий';
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

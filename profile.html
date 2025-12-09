@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой профиль — Инвестируй с умом</title>
+
+    <!-- Шрифт Nunito + Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Шапка */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #007BFF;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 5;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid rgba(0, 123, 255, 0.1);
+        }
+
+        header h1 {
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: -0.5px;
+            color: #007BFF;
+        }
+
+        nav a {
+            color: #007BFF;
+            margin-left: 1.8rem;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00FFA3, #007BFF);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Профиль */
+        .profile-section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
+            padding: 3rem;
+            margin: 0 auto;
+            max-width: 800px;
+            border: 1px solid #e0f0ff;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 45px rgba(0, 123, 255, 0.1);
+            border-color: #b0d8ff;
+        }
+
+        /* Аватар */
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00FFA3, #007BFF);
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-card h2 {
+            font-size: 2.2rem;
+            color: #007BFF;
+            margin-bottom: 0.4rem;
+            font-weight: 700;
+        }
+
+        .profile-card p.subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
+            font-weight: 500;
+        }
+
+        .edit-btn {
+            background: #e6f7ff;
+            color: #007BFF;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .edit-btn:hover {
+            background: #d0e6fb;
+        }
+
+        /* Статистика */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: #f8fcff;
+            padding: 1.3rem;
+            border-radius: 20px;
+            border: 1px solid #e0f0ff;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: #e6f7ff;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+        }
+
+        .stat-card i {
+            font-size: 1.8rem;
+            color: #007BFF;
+            margin-bottom: 0.8rem;
+        }
+
+        .stat-card .value {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #007BFF;
+            display: block;
+        }
+
+        .stat-card .label {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        /* Прогресс */
+        .progress-section {
+            margin-top: 2.5rem;
+            text-align: left;
+        }
+
+        .progress-section h3 {
+            font-size: 1.6rem;
+            color: #007BFF;
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+        }
+
+        .progress-item {
+            margin-bottom: 1.4rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-header span {
+            font-size: 1.1rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e0f0ff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00FFA3, #007BFF);
+            border-radius: 5px;
+            transition: width 0.8s ease-out;
+        }
+
+        /* Подвал */
+        footer {
+            background: #F8FCFF;
+            color: #007BFF;
+            padding: 2.5rem;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-top: 4rem;
+            border-top: 1px solid #e0f0ff;
+        }
+
+        footer p {
+            color: #666;
+            opacity: 0.8;
+        }
+
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 28px;
+            width: 90%;
+            max-width: 550px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            text-align: left;
+            position: relative;
+            animation: modalAppear 0.4s ease;
+        }
+
+        @keyframes modalAppear {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal h2 {
+            font-size: 2rem;
+            color: #007BFF;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d0e6fb;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            background: #f8fcff;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #007BFF;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+        }
+
+        /* Сетка иконок */
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .avatar-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #f0f9ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: #007BFF;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .avatar-option:hover,
+        .avatar-option.selected {
+            background: #e6f7ff;
+            transform: scale(1.1);
+            border-color: #007BFF;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.8rem;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #007BFF;
+        }
+
+        /* Анимация */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .profile-card {
+                padding: 2rem 1.5rem;
+            }
+            .avatar-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка -->
+    <header>
+        <h1>Инвестируй с умом</h1>
+        <nav>
+            <a href="index.html">Главная</a>
+        </nav>
+    </header>
+
+    <!-- Профиль -->
+    <section class="profile-section">
+        <div class="profile-card fade-in">
+            <div class="avatar" id="edit-avatar-trigger">
+                <i id="avatar-icon" class="fas fa-user"></i>
+            </div>
+            <h2 id="profile-name">Анна Петрова</h2>
+            <p class="subtitle" id="profile-level-path">Уровень: Новичок | Образовательный путь: Финансовая грамотность</p>
+            <button class="edit-btn" id="edit-profile-btn">✏️ Редактировать профиль</button>
+
+            <!-- Статистика -->
+            <div class="stats-grid">
+                <div class="stat-card fade-in">
+                    <i class="fas fa-star"></i>
+                    <span class="value" id="stat-experience">24</span>
+                    <span class="label">Опыт</span>
+                </div>
+                <div class="stat-card fade-in">
+                    <i class="fas fa-trophy"></i>
+                    <span class="value" id="stat-tasks">3</span>
+                    <span class="label">Завершено заданий</span>
+                </div>
+                <div class="stat-card fade-in">
+                    <i class="fas fa-coins"></i>
+                    <span class="value" id="stat-capital">12 500₽</span>
+                    <span class="label">Вирт. капитал</span>
+                </div>
+                <div class="stat-card fade-in">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="value" id="stat-profit">+8.2%</span>
+                    <span class="label">Доходность</span>
+                </div>
+            </div>
+
+            <!-- Прогресс обучения -->
+            <div class="progress-section fade-in">
+                <h3>Прогресс обучения</h3>
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span id="course-1-name">Основы инвестирования</span>
+                        <span id="course-1-percent">100%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="course-1-fill" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span id="course-2-name">Анализ рынка</span>
+                        <span id="course-2-percent">65%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="course-2-fill" style="width: 65%"></div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span id="course-3-name">Портфельное управление</span>
+                        <span id="course-3-percent">30%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="course-3-fill" style="width: 30%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer>
+        <p>© 2025 Инвестируй с умом. Все права защищены.</p>
+    </footer>
+
+    <!-- Модальное окно редактирования -->
+    <div class="modal" id="edit-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-edit-modal">&times;</span>
+            <h2>Редактировать профиль</h2>
+
+            <div class="form-group">
+                <label>Имя</label>
+                <input type="text" id="edit-name" placeholder="Введите имя">
+            </div>
+
+            <div class="form-group">
+                <label>Уровень</label>
+                <select id="edit-level">
+                    <option value="Новичок">Новичок</option>
+                    <option value="Студент">Студент</option>
+                    <option value="Аналитик">Аналитик</option>
+                    <option value="Эксперт">Эксперт</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Образовательный путь</label>
+                <input type="text" id="edit-path" placeholder="Например: Трейдинг, Робо-советники...">
+            </div>
+
+            <div class="form-group">
+                <label>Аватар</label>
+                <div class="avatar-grid" id="avatar-options">
+                    <!-- Генерируется JS -->
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn" id="cancel-edit" style="background:#f0f9ff;color:#007BFF;border:none;padding:10px 20px;border-radius:12px;">Отмена</button>
+                <button class="btn btn-primary" id="save-profile" style="background:linear-gradient(90deg, #00FFA3, #007BFF);color:white;border:none;padding:10px 20px;border-radius:12px;">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const DEFAULT_PROFILE = {
+            name: "Анна Петрова",
+            level: "Новичок",
+            path: "Финансовая грамотность",
+            avatarClass: "fa-user",
+            stats: {
+                experience: 24,
+                tasks: 3,
+                capital: 12500,
+                profit: 8.2
+            },
+            courses: [
+                { name: "Основы инвестирования", progress: 100 },
+                { name: "Анализ рынка", progress: 65 },
+                { name: "Портфельное управление", progress: 30 }
+            ]
+        };
+
+        const AVATAR_ICONS = [
+            "fa-user", "fa-user-graduate", "fa-chess-knight", "fa-robot",
+            "fa-chart-line", "fa-coins", "fa-brain", "fa-laptop-code",
+            "fa-rocket", "fa-lightbulb", "fa-star", "fa-award"
+        ];
+
+        // DOM
+        const editModal = document.getElementById('edit-modal');
+        const closeBtn = document.getElementById('close-edit-modal');
+        const editBtn = document.getElementById('edit-profile-btn');
+        const avatarTrigger = document.getElementById('edit-avatar-trigger');
+        const saveBtn = document.getElementById('save-profile');
+        const cancelBtn = document.getElementById('cancel-edit');
+        const avatarOptionsContainer = document.getElementById('avatar-options');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProfile();
+            document.querySelectorAll('.fade-in').forEach((el, i) => {
+                setTimeout(() => el.classList.add('visible'), 200 + i * 100);
+            });
+            renderAvatarOptions();
+
+            editBtn.addEventListener('click', openEditModal);
+            avatarTrigger.addEventListener('click', openEditModal);
+            closeBtn.addEventListener('click', closeEditModal);
+            cancelBtn.addEventListener('click', closeEditModal);
+            saveBtn.addEventListener('click', saveProfile);
+            window.addEventListener('click', (e) => {
+                if (e.target === editModal) closeEditModal();
+            });
+        });
+
+        function saveProfileToStorage(profile) {
+            try {
+                localStorage.setItem('userProfile', JSON.stringify(profile));
+            } catch (e) {
+                console.warn('localStorage недоступен');
+            }
+        }
+
+        function loadProfile() {
+            try {
+                const saved = localStorage.getItem('userProfile');
+                const profile = saved ? JSON.parse(saved) : { ...DEFAULT_PROFILE };
+                window.currentProfile = profile;
+
+                document.getElementById('profile-name').textContent = profile.name;
+                document.getElementById('profile-level-path').textContent = 
+                    `Уровень: ${profile.level} | Образовательный путь: ${profile.path}`;
+                document.getElementById('avatar-icon').className = 'fas ' + profile.avatarClass;
+
+                document.getElementById('stat-experience').textContent = profile.stats.experience;
+                document.getElementById('stat-tasks').textContent = profile.stats.tasks;
+                document.getElementById('stat-capital').textContent = 
+                    profile.stats.capital.toLocaleString('ru-RU') + '₽';
+                document.getElementById('stat-profit').textContent = 
+                    (profile.stats.profit >= 0 ? '+' : '') + profile.stats.profit.toFixed(1) + '%';
+
+                profile.courses.forEach((course, i) => {
+                    const n = i + 1;
+                    document.getElementById(`course-${n}-name`).textContent = course.name;
+                    document.getElementById(`course-${n}-percent`).textContent = course.progress + '%';
+                    document.getElementById(`course-${n}-fill`).style.width = course.progress + '%';
+                });
+            } catch (e) {
+                console.error('Ошибка загрузки профиля', e);
+                window.currentProfile = { ...DEFAULT_PROFILE };
+            }
+        }
+
+        function renderAvatarOptions() {
+            avatarOptionsContainer.innerHTML = '';
+            AVATAR_ICONS.forEach(icon => {
+                const div = document.createElement('div');
+                div.className = 'avatar-option';
+                div.innerHTML = `<i class="fas ${icon}"></i>`;
+                div.dataset.icon = icon;
+                div.addEventListener('click', () => {
+                    document.querySelectorAll('.avatar-option').forEach(el => el.classList.remove('selected'));
+                    div.classList.add('selected');
+                    window.selectedAvatar = icon;
+                });
+                avatarOptionsContainer.appendChild(div);
+            });
+        }
+
+        function openEditModal() {
+            const p = window.currentProfile;
+            document.getElementById('edit-name').value = p.name;
+            document.getElementById('edit-level').value = p.level;
+            document.getElementById('edit-path').value = p.path;
+
+            window.selectedAvatar = p.avatarClass;
+            document.querySelectorAll('.avatar-option').forEach(el => {
+                el.classList.toggle('selected', el.dataset.icon === p.avatarClass);
+            });
+
+            editModal.style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            editModal.style.display = 'none';
+        }
+
+        function saveProfile() {
+            const p = window.currentProfile;
+            p.name = document.getElementById('edit-name').value.trim() || p.name;
+            p.level = document.getElementById('edit-level').value;
+            p.path = document.getElementById('edit-path').value.trim() || p.path;
+            p.avatarClass = window.selectedAvatar || p.avatarClass;
+
+            saveProfileToStorage(p);
+            loadProfile(); // обновить UI
+            closeEditModal();
+        }
+    </script>
+
+</body>
+</html>

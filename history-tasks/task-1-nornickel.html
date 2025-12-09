@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>«Норникель» — Buyback и шорт-сквиз (2020)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito', sans-serif; }
+        body { background: #F8FCFF; color: #333; padding: 1.5rem; }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.06); overflow: hidden; }
+        header { background: #007BFF; color: white; padding: 1.5rem 2rem; display: flex; align-items: center; gap: 1rem; justify-content: space-between; }
+        header i { font-size: 2rem; }
+        header h1 { font-size: 1.6rem; font-weight: 600; }
+        .content { padding: 2rem; }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #007BFF;
+            margin-bottom: 1.5rem;
+            text-decoration: none;
+            gap: 0.5rem;
+        }
+
+        .event-card {
+            background: #f0f8ff;
+            border-left: 4px solid #007BFF;
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 1.5rem;
+        }
+        .event-card h2 {
+            color: #007BFF;
+            margin-bottom: 0.8rem;
+            font-size: 1.4rem;
+        }
+        .event-card p { margin-bottom: 0.6rem; }
+        .event-date { 
+            font-weight: 600; 
+            color: #007BFF; 
+            background: #e6f2ff; 
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            margin: 0.4rem 0;
+        }
+
+        .chart-container {
+            background: white;
+            border: 1px solid #e0e7ff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .chart-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #222;
+        }
+
+        .svg-chart {
+            width: 100%;
+            height: 200px;
+            background: #f8fcff;
+            border-radius: 12px;
+            position: relative;
+            overflow: visible;
+        }
+        .axis {
+            stroke: #ccc;
+            stroke-width: 1;
+        }
+        .grid {
+            stroke: #e0e0e0;
+            stroke-dasharray: 4 4;
+        }
+        .price-line {
+            stroke: #007BFF;
+            stroke-width: 3;
+            fill: none;
+        }
+        .event-marker {
+            fill: #28a745;
+            stroke: white;
+            stroke-width: 2;
+        }
+        .label {
+            font-size: 0.8rem;
+            fill: #555;
+        }
+        .event-label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            fill: #007BFF;
+        }
+
+        .question-box {
+            background: #fff9e6;
+            border-left: 4px solid #ffc107;
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0;
+        }
+        .question-box h3 {
+            color: #856404;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+        .option {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .option:hover {
+            border-color: #007BFF;
+            background: #f0f8ff;
+            transform: translateX(4px);
+        }
+        .option.selected {
+            border-color: #007BFF;
+            background: #e6f2ff;
+            box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+        }
+        .option.correct {
+            border-color: #28a745;
+            background: #f0fff4;
+        }
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #fff0f0;
+        }
+        .option-letter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #007BFF;
+            color: white;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .feedback {
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-top: 1.5rem;
+            display: none;
+        }
+        .feedback.correct {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            display: block;
+        }
+        .feedback.incorrect {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            display: block;
+        }
+        .feedback h4 {
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+        }
+
+        .btn { 
+            display: inline-block; 
+            background: #007BFF; 
+            color: white; 
+            padding: 14px 32px; 
+            border-radius: 50px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            margin-top: 1rem; 
+            transition: all 0.3s; 
+            box-shadow: 0 5px 15px rgba(0,123,255,0.2);
+            text-align: center;
+            font-size: 1.05rem;
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .btn:hover:not(:disabled) { 
+            background: #0056b3; 
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,123,255,0.3);
+        }
+
+        /* Анимация бейджа */
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(40,167,69,0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(40,167,69,0); }
+            100% { box-shadow: 0 0 0 0 rgba(40,167,69,0); }
+        }
+        .status-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            animation: fadeInScale 0.6s ease-out;
+        }
+        .status-badge.pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <i class="fas fa-mountain"></i>
+            <h1>«Норникель»: Buyback и шорт-сквиз (2020)</h1>
+            <span id="statusBadge" class="status-badge" style="background: #6c757d;">
+                <i class="fas fa-question-circle"></i> Новое задание
+            </span>
+        </header>
+
+        <div class="content">
+            <a href="tasks-list.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Назад к заданиям
+            </a>
+
+            <div class="event-card">
+                <div class="event-date">15 мая 2020</div>
+                <h2>Событие</h2>
+                <p>«Норникель» объявил о выкупе акций на <strong>$5 млрд</strong> (4,5% от капитала).</p>
+                <p>На момент объявления:</p>
+                <ul style="padding-left: 1.5rem; margin: 0.5rem 0;">
+                    <li>Цена акций: <strong>14 800 ₽</strong> (минимум за 2 года)</li>
+                    <li>Короткие позиции: <strong>12,1%</strong> от свободного обращения (рекорд)</li>
+                    <li>Цены на никель и палладий — на минимуме из-за пандемии</li>
+                </ul>
+            </div>
+
+            <div class="chart-container">
+    <div class="chart-title">Динамика акций GMKN (апрель–июнь 2020)</div>
+    <div style="background: #f8fcff; padding: 1.5rem; border-radius: 12px; text-align: center;">
+        <svg width="100%" height="200" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
+            <!-- Ось Y -->
+            <line x1="60" y1="20" x2="60" y2="180" stroke="#ccc" stroke-width="1"/>
+            <!-- Ось X -->
+            <line x1="60" y1="180" x2="380" y2="180" stroke="#ccc" stroke-width="1"/>
+
+            <!-- Сетка -->
+            <line x1="60" y1="150" x2="380" y2="150" stroke="#e0e0e0" stroke-dasharray="4 4"/>
+            <line x1="60" y1="120" x2="380" y2="120" stroke="#e0e0e0" stroke-dasharray="4 4"/>
+            <line x1="60" y1="90" x2="380" y2="90" stroke="#e0e0e0" stroke-dasharray="4 4"/>
+            <line x1="60" y1="60" x2="380" y2="60" stroke="#e0e0e0" stroke-dasharray="4 4"/>
+
+            <!-- Линия цены -->
+            <polyline 
+                points="60,150 140,120 220,60 300,40" 
+                fill="none" 
+                stroke="#007BFF" 
+                stroke-width="3"
+            />
+
+            <!-- Маркер события -->
+            <circle cx="140" cy="120" r="5" fill="#28a745" stroke="white" stroke-width="2"/>
+            <text x="140" y="135" font-size="10" fill="#28a745" text-anchor="middle">15 мая</text>
+
+            <!-- Подписи осей -->
+            <text x="40" y="150" font-size="10" fill="#555" text-anchor="end">16 000 ₽</text>
+            <text x="40" y="120" font-size="10" fill="#555" text-anchor="end">18 000 ₽</text>
+            <text x="40" y="90" font-size="10" fill="#555" text-anchor="end">20 000 ₽</text>
+            <text x="40" y="60" font-size="10" fill="#555" text-anchor="end">22 000 ₽</text>
+            <text x="40" y="180" font-size="10" fill="#555" text-anchor="end">14 800 ₽</text>
+
+            <text x="60" y="195" font-size="10" fill="#555" text-anchor="start">1 мая</text>
+            <text x="140" y="195" font-size="10" fill="#555" text-anchor="middle">15 мая</text>
+            <text x="220" y="195" font-size="10" fill="#555" text-anchor="middle">1 июня</text>
+            <text x="300" y="195" font-size="10" fill="#555" text-anchor="middle">15 июня</text>
+        </svg>
+        <p style="margin-top: 1rem; font-size: 0.85rem; color: #666; text-align: left; padding-left: 1rem;">
+            <i class="fas fa-thumbtack" style="color: #dc3545;"></i> 
+            <strong>Данные:</strong> Московская биржа, Cbonds, отчёт «Норникеля». График упрощён для наглядности.
+        </p>
+    </div>
+</div>
+
+            <div class="question-box">
+                <h3>Вопрос</h3>
+                <p><strong>Как изменилась цена акций «Норникеля» в течение 1 месяца после объявления о buyback’е?</strong></p>
+            </div>
+
+            <div class="options" id="options">
+                <div class="option" data-value="A" onclick="selectOption(this)">
+                    <div class="option-letter">A</div>
+                    <span>↓ –20% — инвесторы сочли выкуп признаком отсутствия роста</span>
+                </div>
+                <div class="option" data-value="B" onclick="selectOption(this)">
+                    <div class="option-letter">B</div>
+                    <span>↔ Нет значимого движения — рынок уже заложил buyback в цену</span>
+                </div>
+                <div class="option" data-value="C" onclick="selectOption(this)">
+                    <div class="option-letter">C</div>
+                    <span>↑ +15% — умеренный рост от улучшения капитала</span>
+                </div>
+                <div class="option" data-value="D" onclick="selectOption(this)">
+                    <div class="option-letter">D</div>
+                    <span>↑ +42% — шорт-сквиз + buyback → мощный импульс</span>
+                </div>
+            </div>
+
+            <button class="btn" id="submitBtn" onclick="checkAnswer()" disabled>
+                Проверить ответ
+            </button>
+
+            <div class="feedback" id="feedback"></div>
+        </div>
+    </div>
+
+    <script>
+        let selectedOption = null;
+
+        function selectOption(el) {
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedOption = el.dataset.value;
+            document.getElementById('submitBtn').disabled = false;
+        }
+
+        function checkAnswer() {
+            const feedbackEl = document.getElementById('feedback');
+            const correctAnswer = 'D';
+            const isCorrect = selectedOption === correctAnswer;
+
+            localStorage.setItem('task-1-status', isCorrect ? 'correct' : 'incorrect');
+            updateStatusBadge(isCorrect);
+
+            if (isCorrect) {
+                feedbackEl.className = 'feedback correct';
+                feedbackEl.innerHTML = `
+                    <h4>✅ Верно!</h4>
+                    <p><strong>+42% за месяц</strong> — акции выросли с 14 800 ₽ до 21 000 ₽ к середине июня.</p>
+                    <p>Причина: шорт-сквиз (покрытие коротких позиций) + эффект buyback’а.</p>
+                    <p>📌 Это один из самых мощных short squeezes на российском рынке в 2020 г.</p>
+                    <p><small>Источник: Московская биржа, отчёт «Норникеля», Cbonds.</small></p>
+                `;
+            } else {
+                feedbackEl.className = 'feedback incorrect';
+                feedbackEl.innerHTML = `
+                    <h4>❌ Почти…</h4>
+                    <p>Правильный ответ: <strong>D</strong> — рост на <strong>+42%</strong>.</p>
+                    <p>После объявления хедж-фонды начали срочно закрывать шорт-позиции (12% акций!), что создало ажиотажный спрос. Buyback усилил эффект.</p>
+                    <p><small>Источник: Московская биржа, отчёт «Норникеля», Cbonds.</small></p>
+                `;
+            }
+
+            document.getElementById('submitBtn').innerText = '✅ Завершить задание';
+            document.getElementById('submitBtn').onclick = () => {
+                let progress = parseInt(localStorage.getItem('historyTasksProgress') || '0');
+                if (progress < 1) {
+                    localStorage.setItem('historyTasksProgress', '1');
+                }
+                window.location.href = 'tasks-list.html';
+            };
+        }
+
+        function updateStatusBadge(isCorrect = false) {
+            const badge = document.getElementById('statusBadge');
+            if (!badge) return;
+
+            // Убираем предыдущие классы
+            badge.classList.remove('pulse');
+
+            if (isCorrect) {
+                badge.style.background = '#28a745';
+                badge.innerHTML = '<i class="fas fa-check-circle"></i> Пройдено';
+                badge.classList.add('pulse'); // ✅ Анимация пульсации
+            } else if (localStorage.getItem('task-1-status') === 'incorrect') {
+                badge.style.background = '#dc3545';
+                badge.innerHTML = '<i class="fas fa-times-circle"></i> Была ошибка';
+            } else {
+                badge.style.background = '#6c757d';
+                badge.innerHTML = '<i class="fas fa-question-circle"></i> Новое задание';
+            }
+        }
+
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            const status = localStorage.getItem('task-1-status');
+            if (status === 'correct') {
+                updateStatusBadge(true);
+            } else if (status === 'incorrect') {
+                updateStatusBadge(false);
+            } else {
+                updateStatusBadge(false);
+            }
+        });
+    </script>
+</body>
+</html>

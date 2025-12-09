@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Инвестируй с умом — Твой путь к финансовой грамотности</title>
+
+    <!-- Шрифт Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Шапка */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #007BFF;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 5;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid rgba(0, 123, 255, 0.1);
+        }
+
+        header h1 {
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: -0.5px;
+            color: #007BFF;
+        }
+
+        nav a {
+            color: #007BFF;
+            margin-left: 1.8rem;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00FFA3, #007BFF);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Плавающая иконка библиотеки */
+        .library-icon {
+            position: absolute;
+            top: 95px;
+            right: 35px;
+            font-size: 3.2rem;
+            color: #007BFF;
+            cursor: pointer;
+            background: white;
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            line-height: 95px;
+            box-shadow: 0 10px 30px rgba(0, 123, 255, 0.2);
+            z-index: 10;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .library-icon:hover {
+            transform: scale(1.2) rotate(5deg);
+            box-shadow: 0 15px 40px rgba(0, 123, 255, 0.3);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Герой-секция — только градиент здесь */
+        .hero {
+            padding: 6rem 2rem 5rem;
+            text-align: center;
+            background: linear-gradient(135deg, #00FFA3, #007BFF);
+            color: white;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            letter-spacing: -1px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 750px;
+            margin: 0 auto 2.5rem;
+            opacity: 0.95;
+            line-height: 1.6;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.95);
+            color: #007BFF;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 60px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 15px;
+            box-shadow: 0 8px 25px rgba(0, 255, 163, 0.3);
+            transition: all 0.4s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 255, 163, 0.4);
+            background: white;
+        }
+
+        /* Как это работает? */
+        .how-it-works {
+            padding: 5rem 2rem;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .how-it-works h2 {
+            font-size: 2.4rem;
+            color: #007BFF;
+            margin-bottom: 2.5rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .step-card {
+            background: white;
+            padding: 2.2rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s ease;
+            border: 1px solid #e0f0ff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card i {
+            font-size: 2.5rem;
+            color: #007BFF;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-card h3 {
+            font-size: 1.6rem;
+            color: #007BFF;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .step-card p {
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
+            border-color: #b0d8ff;
+        }
+
+        /* Мотивационная подсказка */
+        .motivation {
+            background: #F0FAFF;
+            padding: 2rem;
+            border-radius: 24px;
+            margin: 3rem auto;
+            max-width: 700px;
+            text-align: center;
+            border: 1px solid #d0e6fb;
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.08);
+        }
+
+        .motivation p {
+            font-size: 1.3rem;
+            color: #444;
+            font-weight: 500;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .motivation span {
+            color: #007BFF;
+            font-weight: 600;
+        }
+
+        /* Типы заданий */
+        .features {
+            padding: 6rem 2rem;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            font-size: 2.4rem;
+            color: #007BFF;
+            margin-bottom: 2.5rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 28px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s ease;
+            border: 1px solid #e0f0ff;
+        }
+
+        .feature-card h3 {
+            font-size: 1.7rem;
+            color: #007BFF;
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: #555;
+            font-size: 1.2rem;
+            line-height: 1.7;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+            border-color: #b0d8ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: #F8FCFF;
+            color: #007BFF;
+            padding: 2.5rem;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-top: 3rem;
+            border-top: 1px solid #e0f0ff;
+        }
+
+        footer p {
+            color: #666;
+            opacity: 0.8;
+        }
+
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 28px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            animation: modalAppear 0.4s ease;
+        }
+
+        @keyframes modalAppear {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal h2 {
+            font-size: 2.2rem;
+            color: #007BFF;
+            margin-bottom: 1.5rem;
+        }
+
+        .practice-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .option-card {
+            background: #f8fcff;
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 1px solid #e0f0ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .option-card:hover {
+            background: #e6f7ff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: #b0d8ff;
+        }
+
+        .option-card i {
+            font-size: 1.8rem;
+            color: #007BFF;
+            margin-right: 1rem;
+        }
+
+        .option-card h3 {
+            display: inline;
+            font-size: 1.4rem;
+            color: #007BFF;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-card p {
+            color: #555;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.8rem;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #007BFF;
+        }
+
+        /* Анимация появления при скролле */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+   <!-- Шапка -->
+    <header>
+        <h1>Инвестируй с умом</h1>
+        <nav>
+            <a href="#" id="open-practice-modal">Практика</a>
+            <a href="profile.html">Профиль</a>
+        </nav>
+    </header>
+
+    <!-- Плавающая иконка библиотеки -->
+    <a href="library.html" class="library-icon" title="Библиотека терминов">
+        <i class="fas fa-book-open"></i>
+    </a>
+
+    <!-- Герой-секция — только здесь градиент -->
+    <section class="hero">
+        <h1>Инвестируй, как профи — с нуля</h1>
+        <p>Образовательная платформа для новичков и подростков. Учись, практикуйся, зарабатывай виртуальные деньги — без риска.</p>
+        <a href="#" class="btn" id="start-practice-btn">Начать практику</a>
+    </section>
+
+    <!-- Как это работает? -->
+    <section class="how-it-works">
+        <h2>Как это работает?</h2>
+        <div class="steps-grid">
+            <div class="step-card">
+                <i class="fas fa-play-circle"></i>
+                <h3>Выбери задание</h3>
+                <p>Начни с простого — например, «На основе истории» или «Математические модели».</p>
+            </div>
+            <div class="step-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Практикуйся</h3>
+                <p>Работай с виртуальными деньгами, анализируй данные, принимай решения.</p>
+            </div>
+            <div class="step-card">
+                <i class="fas fa-check-circle"></i>
+                <h3>Получи результат</h3>
+                <p>Смотри, как меняется твой портфель, что ты сделал правильно — и где можно улучшиться.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Мотивационная подсказка -->
+    <div class="motivation">
+        <p>Готов узнать больше? <span>Начни с первого задания</span> — это просто и безопасно.</p>
+    </div>
+
+    <!-- Типы заданий -->
+    <section class="features">
+        <h2>Выбери свой путь практики</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>На основе истории</h3>
+                <p>Задания, построенные на реальных исторических данных. Учись на примерах из прошлого.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Математические модели</h3>
+                <p>Работа с формулами и расчётами. Развивай аналитическое мышление.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Умный симулятор</h3>
+                <p>Задания, где прогнозы строятся на основе нейросети. Ощути будущее.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer>
+        <p>© 2025 Инвестируй с умом. Все права защищены.</p>
+    </footer>
+
+    <script>
+        // Анимация появления при скролле
+        document.addEventListener('DOMContentLoaded', () => {
+            const fadeElements = document.querySelectorAll('.step-card, .feature-card, .motivation');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+
+        <!-- Модальное окно -->
+    <div class="modal" id="practice-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <h2>Выбери тип практики</h2>
+            <div class="practice-options">
+                <div class="option-card" data-practice="tasks-list">
+                    <i class="fas fa-history"></i>
+                    <h3>На основе истории</h3>
+                    <p>Задания, построенные на реальных исторических данных. Учись на примерах из прошлого.</p>
+                </div>
+                <div class="option-card" data-practice="math">
+                    <i class="fas fa-calculator"></i>
+                    <h3>Математические модели</h3>
+                    <p>Работа с формулами и расчётами. Развивай аналитическое мышление.</p>
+                </div>
+                <div class="option-card" data-practice="ai">
+                    <i class="fas fa-brain"></i>
+                    <h3>Умный симулятор (нейросеть)</h3>
+                    <p>Задания, где прогнозы строятся на основе нейросети. Ощути будущее.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('practice-modal');
+        const openModalBtn = document.getElementById('open-practice-modal');
+        const startPracticeBtn = document.getElementById('start-practice-btn');
+        const closeModalBtn = document.getElementById('close-modal');
+        const optionCards = document.querySelectorAll('.option-card');
+
+        // Открытие модального окна
+        openModalBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.style.display = 'flex';
+        });
+
+        startPracticeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.style.display = 'flex';
+        });
+
+        // Закрытие модального окна
+        closeModalBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Выбор типа практики
+        optionCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const practiceType = card.getAttribute('data-practice');
+                let url = '';
+
+                if (practiceType === 'tasks-list') {
+                    url = 'history-tasks/tasks-list.html';
+                } else if (practiceType === 'math') {
+                    url = 'math.html';
+                } else if (practiceType === 'ai') {
+                    url = 'ai.html';
+                }
+
+                if (url) {
+                    window.location.href = url;
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
