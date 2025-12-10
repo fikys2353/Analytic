@@ -425,7 +425,7 @@
                 <div class="stat-card fade-in">
                     <i class="fas fa-trophy"></i>
                     <span class="value" id="stat-tasks">3</span>
-                    <span class="label">Правильно завершено заданий</span>
+                    <span class="label">Завершено заданий</span>
                 </div>
                 <div class="stat-card fade-in">
                     <i class="fas fa-coins"></i>
@@ -444,7 +444,7 @@
                 <h3>Прогресс обучения</h3>
                 <div class="progress-item">
                     <div class="progress-header">
-                        <span id="course-1-name">Основы инвестирования</span>
+                        <span id="course-1-name">Исторические задания</span>
                         <span id="course-1-percent">100%</span>
                     </div>
                     <div class="progress-bar">
@@ -527,22 +527,21 @@
             avatarClass: "fa-user",
             stats: {
                 experience: 24,
-                tasks: 0, // будет пересчитан
+                tasks: 0,
                 capital: 12500,
                 profit: 8.2
             }
         };
 
-        // === АВАТАРЫ ===
         const AVATAR_ICONS = [
             "fa-user", "fa-user-graduate", "fa-chess-knight", "fa-robot",
             "fa-chart-line", "fa-coins", "fa-brain", "fa-laptop-code",
             "fa-rocket", "fa-lightbulb", "fa-star", "fa-award"
         ];
 
-        // === ФУНКЦИЯ: Получить прогресс по курсам из localStorage ===
+        // === ТОЧНАЯ ФУНКЦИЯ ПОДСЧЁТА ПРОГРЕССА ===
         function getCourseProgress() {
-            // История (tasks-list.html)
+            // История (tasks-list.html): task-1-status, ..., task-10-status
             function getHistoryProgress() {
                 const total = 10;
                 let completed = 0;
@@ -553,14 +552,18 @@
                 return { done: completed, total };
             }
 
-            // Матмодель (math.html) — временно через localStorage
+            // Матмодель (math.html): mathModelsTaskStatus-0, -1, ..., -N
             function getMathProgress() {
                 const total = parseInt(localStorage.getItem('math-total') || '5');
-                const completed = parseInt(localStorage.getItem('math-completed') || '0');
+                let completed = 0;
+                for (let i = 0; i < total; i++) {
+                    const status = localStorage.getItem(`mathModelsTaskStatus-${i}`);
+                    if (status === 'correct') completed++;
+                }
                 return { done: completed, total };
             }
 
-            // ИИ (ai.html)
+            // ИИ (ai.html): tyndex_tasks_progress_v2 → { "1": { status: "correct", ... } }
             function getAIProgress() {
                 const total = parseInt(localStorage.getItem('ai-total') || '5');
                 let completed = 0;
@@ -569,7 +572,8 @@
                     if (raw) {
                         const progress = JSON.parse(raw);
                         completed = Object.values(progress)
-                            .filter(item => item.status === 'correct').length;
+                            .filter(item => item && item.status === 'correct')
+                            .length;
                     }
                 } catch (e) {
                     console.warn('Ошибка чтения прогресса ИИ:', e);
@@ -589,7 +593,7 @@
                     total: hist.total
                 },
                 {
-                    name: "Матмодель",
+                    name: "Математические модели",
                     progress: Math.min(100, Math.round((math.done / math.total) * 100)) || 0,
                     done: math.done,
                     total: math.total
@@ -603,7 +607,7 @@
             ];
         }
 
-        // === ХРАНЕНИЕ ПРОФИЛЯ ===
+        // === РАБОТА С ПРОФИЛЕМ ===
         function saveProfileToStorage(profile) {
             try {
                 localStorage.setItem('userProfile', JSON.stringify({
@@ -627,16 +631,13 @@
                 const saved = localStorage.getItem('userProfile');
                 let profile = saved ? JSON.parse(saved) : { ...DEFAULT_PROFILE };
 
-                // Динамически получаем курсы
                 profile.courses = getCourseProgress();
-
-                // Обновляем общую статистику
                 const totalCompleted = profile.courses.reduce((sum, c) => sum + c.done, 0);
                 profile.stats.tasks = totalCompleted;
 
                 window.currentProfile = profile;
 
-                // Обновляем DOM
+                // Обновляем UI
                 document.getElementById('profile-name').textContent = profile.name;
                 document.getElementById('profile-level-path').textContent = 
                     `Уровень: ${profile.level} | Образовательный путь: ${profile.path}`;
@@ -663,7 +664,7 @@
             }
         }
 
-        // === РЕНДЕР АВАТАРОВ ===
+        // === UI ===
         function renderAvatarOptions() {
             const container = document.getElementById('avatar-options');
             container.innerHTML = '';
@@ -681,7 +682,6 @@
             });
         }
 
-        // === МОДАЛЬНЫЕ ФУНКЦИИ ===
         function openEditModal() {
             const p = window.currentProfile;
             document.getElementById('edit-name').value = p.name;
@@ -708,7 +708,7 @@
             p.avatarClass = window.selectedAvatar || p.avatarClass;
 
             saveProfileToStorage(p);
-            loadProfile(); // обновить UI
+            loadProfile();
             closeEditModal();
         }
 
@@ -720,30 +720,29 @@
             });
             renderAvatarOptions();
 
-            // Кнопки
+            // Слушатели
             document.getElementById('edit-profile-btn').addEventListener('click', openEditModal);
             document.getElementById('edit-avatar-trigger').addEventListener('click', openEditModal);
             document.getElementById('close-edit-modal').addEventListener('click', closeEditModal);
             document.getElementById('cancel-edit').addEventListener('click', closeEditModal);
             document.getElementById('save-profile').addEventListener('click', saveProfile);
 
-            // Закрытие по клику вне модалки
             window.addEventListener('click', (e) => {
                 if (e.target.id === 'edit-modal') closeEditModal();
             });
 
-            // Реакция на изменения в других вкладках (storage event)
+            // Реакция на изменения в других вкладках
             window.addEventListener('storage', (e) => {
-                const watchKeys = [
-                    'historyTasksProgress',
+                const keys = [
+                    'task-1-status', 'task-2-status', 'task-3-status', 'task-4-status',
+                    'task-5-status', 'task-6-status', 'task-7-status', 'task-8-status',
+                    'task-9-status', 'task-10-status',
+                    'mathModelsTaskStatus-0', 'mathModelsTaskStatus-1', 'mathModelsTaskStatus-2',
+                    'mathModelsTaskStatus-3', 'mathModelsTaskStatus-4',
                     'tyndex_tasks_progress_v2',
-                    'math-completed', 'math-total',
-                    'ai-total',
-                    'task-1-status', 'task-2-status', 'task-3-status',
-                    'task-4-status', 'task-5-status', 'task-6-status',
-                    'task-7-status', 'task-8-status', 'task-9-status', 'task-10-status'
+                    'math-total', 'ai-total'
                 ];
-                if (watchKeys.includes(e.key)) {
+                if (keys.includes(e.key)) {
                     loadProfile();
                 }
             });
