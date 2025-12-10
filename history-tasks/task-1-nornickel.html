@@ -158,6 +158,13 @@
             flex-shrink: 0;
         }
 
+        /* 🔒 Новый класс: заблокированный вариант */
+        .disabled-option {
+            opacity: 0.75;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
         .feedback {
             padding: 1.5rem;
             border-radius: 16px;
@@ -205,7 +212,7 @@
             box-shadow: 0 8px 20px rgba(0,123,255,0.3);
         }
 
-        /* Анимация бейджа */
+        /* Анимации */
         @keyframes fadeInScale {
             0% { opacity: 0; transform: scale(0.8); }
             100% { opacity: 1; transform: scale(1); }
@@ -259,50 +266,39 @@
             </div>
 
             <div class="chart-container">
-    <div class="chart-title">Динамика акций GMKN (апрель–июнь 2020)</div>
-    <div style="background: #f8fcff; padding: 1.5rem; border-radius: 12px; text-align: center;">
-        <svg width="100%" height="200" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
-            <!-- Ось Y -->
-            <line x1="60" y1="20" x2="60" y2="180" stroke="#ccc" stroke-width="1"/>
-            <!-- Ось X -->
-            <line x1="60" y1="180" x2="380" y2="180" stroke="#ccc" stroke-width="1"/>
-
-            <!-- Сетка -->
-            <line x1="60" y1="150" x2="380" y2="150" stroke="#e0e0e0" stroke-dasharray="4 4"/>
-            <line x1="60" y1="120" x2="380" y2="120" stroke="#e0e0e0" stroke-dasharray="4 4"/>
-            <line x1="60" y1="90" x2="380" y2="90" stroke="#e0e0e0" stroke-dasharray="4 4"/>
-            <line x1="60" y1="60" x2="380" y2="60" stroke="#e0e0e0" stroke-dasharray="4 4"/>
-
-            <!-- Линия цены -->
-            <polyline 
-                points="60,150 140,120 220,60 300,40" 
-                fill="none" 
-                stroke="#007BFF" 
-                stroke-width="3"
-            />
-
-            <!-- Маркер события -->
-            <circle cx="140" cy="120" r="5" fill="#28a745" stroke="white" stroke-width="2"/>
-            <text x="140" y="135" font-size="10" fill="#28a745" text-anchor="middle">15 мая</text>
-
-            <!-- Подписи осей -->
-            <text x="40" y="150" font-size="10" fill="#555" text-anchor="end">16 000 ₽</text>
-            <text x="40" y="120" font-size="10" fill="#555" text-anchor="end">18 000 ₽</text>
-            <text x="40" y="90" font-size="10" fill="#555" text-anchor="end">20 000 ₽</text>
-            <text x="40" y="60" font-size="10" fill="#555" text-anchor="end">22 000 ₽</text>
-            <text x="40" y="180" font-size="10" fill="#555" text-anchor="end">14 800 ₽</text>
-
-            <text x="60" y="195" font-size="10" fill="#555" text-anchor="start">1 мая</text>
-            <text x="140" y="195" font-size="10" fill="#555" text-anchor="middle">15 мая</text>
-            <text x="220" y="195" font-size="10" fill="#555" text-anchor="middle">1 июня</text>
-            <text x="300" y="195" font-size="10" fill="#555" text-anchor="middle">15 июня</text>
-        </svg>
-        <p style="margin-top: 1rem; font-size: 0.85rem; color: #666; text-align: left; padding-left: 1rem;">
-            <i class="fas fa-thumbtack" style="color: #dc3545;"></i> 
-            <strong>Данные:</strong> Московская биржа, Cbonds, отчёт «Норникеля». График упрощён для наглядности.
-        </p>
-    </div>
-</div>
+                <div class="chart-title">Динамика акций GMKN (апрель–июнь 2020)</div>
+                <div style="background: #f8fcff; padding: 1.5rem; border-radius: 12px; text-align: center;">
+                    <svg width="100%" height="200" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
+                        <line x1="60" y1="20" x2="60" y2="180" stroke="#ccc" stroke-width="1"/>
+                        <line x1="60" y1="180" x2="380" y2="180" stroke="#ccc" stroke-width="1"/>
+                        <line x1="60" y1="150" x2="380" y2="150" stroke="#e0e0e0" stroke-dasharray="4 4"/>
+                        <line x1="60" y1="120" x2="380" y2="120" stroke="#e0e0e0" stroke-dasharray="4 4"/>
+                        <line x1="60" y1="90" x2="380" y2="90" stroke="#e0e0e0" stroke-dasharray="4 4"/>
+                        <line x1="60" y1="60" x2="380" y2="60" stroke="#e0e0e0" stroke-dasharray="4 4"/>
+                        <polyline 
+                            points="60,150 140,120 220,60 300,40" 
+                            fill="none" 
+                            stroke="#007BFF" 
+                            stroke-width="3"
+                        />
+                        <circle cx="140" cy="120" r="5" fill="#28a745" stroke="white" stroke-width="2"/>
+                        <text x="140" y="135" font-size="10" fill="#28a745" text-anchor="middle">15 мая</text>
+                        <text x="40" y="150" font-size="10" fill="#555" text-anchor="end">16 000 ₽</text>
+                        <text x="40" y="120" font-size="10" fill="#555" text-anchor="end">18 000 ₽</text>
+                        <text x="40" y="90" font-size="10" fill="#555" text-anchor="end">20 000 ₽</text>
+                        <text x="40" y="60" font-size="10" fill="#555" text-anchor="end">22 000 ₽</text>
+                        <text x="40" y="180" font-size="10" fill="#555" text-anchor="end">14 800 ₽</text>
+                        <text x="60" y="195" font-size="10" fill="#555" text-anchor="start">1 мая</text>
+                        <text x="140" y="195" font-size="10" fill="#555" text-anchor="middle">15 мая</text>
+                        <text x="220" y="195" font-size="10" fill="#555" text-anchor="middle">1 июня</text>
+                        <text x="300" y="195" font-size="10" fill="#555" text-anchor="middle">15 июня</text>
+                    </svg>
+                    <p style="margin-top: 1rem; font-size: 0.85rem; color: #666; text-align: left; padding-left: 1rem;">
+                        <i class="fas fa-thumbtack" style="color: #dc3545;"></i> 
+                        <strong>Данные:</strong> Московская биржа, Cbonds, отчёт «Норникеля». График упрощён для наглядности.
+                    </p>
+                </div>
+            </div>
 
             <div class="question-box">
                 <h3>Вопрос</h3>
@@ -338,8 +334,10 @@
 
     <script>
         let selectedOption = null;
+        let isSubmitted = false;
 
         function selectOption(el) {
+            if (isSubmitted) return; // 🔒 запрет после отправки
             document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
             el.classList.add('selected');
             selectedOption = el.dataset.value;
@@ -347,13 +345,29 @@
         }
 
         function checkAnswer() {
+            if (isSubmitted) return;
+            isSubmitted = true;
+
             const feedbackEl = document.getElementById('feedback');
             const correctAnswer = 'D';
             const isCorrect = selectedOption === correctAnswer;
 
+            // Сохраняем статус
             localStorage.setItem('task-1-status', isCorrect ? 'correct' : 'incorrect');
             updateStatusBadge(isCorrect);
 
+            // 🔒 Блокируем все варианты
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.add('disabled-option');
+                // Подсветка правильного/неправильного (опционально, но сохраняем стиль)
+                if (opt.dataset.value === correctAnswer) {
+                    opt.classList.add('correct');
+                } else if (opt === document.querySelector('.option.selected')) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            // Показываем фидбек
             if (isCorrect) {
                 feedbackEl.className = 'feedback correct';
                 feedbackEl.innerHTML = `
@@ -373,8 +387,11 @@
                 `;
             }
 
-            document.getElementById('submitBtn').innerText = '✅ Завершить задание';
-            document.getElementById('submitBtn').onclick = () => {
+            // Перенастраиваем кнопку
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = '✅ Завершить задание';
+            btn.disabled = false;
+            btn.onclick = () => {
                 let progress = parseInt(localStorage.getItem('historyTasksProgress') || '0');
                 if (progress < 1) {
                     localStorage.setItem('historyTasksProgress', '1');
@@ -387,13 +404,12 @@
             const badge = document.getElementById('statusBadge');
             if (!badge) return;
 
-            // Убираем предыдущие классы
             badge.classList.remove('pulse');
 
             if (isCorrect) {
                 badge.style.background = '#28a745';
                 badge.innerHTML = '<i class="fas fa-check-circle"></i> Пройдено';
-                badge.classList.add('pulse'); // ✅ Анимация пульсации
+                badge.classList.add('pulse');
             } else if (localStorage.getItem('task-1-status') === 'incorrect') {
                 badge.style.background = '#dc3545';
                 badge.innerHTML = '<i class="fas fa-times-circle"></i> Была ошибка';
@@ -406,12 +422,53 @@
         // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', () => {
             const status = localStorage.getItem('task-1-status');
+
             if (status === 'correct') {
+                isSubmitted = true;
                 updateStatusBadge(true);
+                // Восстанавливаем выбранный и правильный вариант
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.add('disabled-option');
+                    if (opt.dataset.value === 'D') opt.classList.add('correct');
+                });
+                document.getElementById('feedback').className = 'feedback correct';
+                document.getElementById('feedback').innerHTML = `
+                    <h4>✅ Верно!</h4>
+                    <p><strong>+42% за месяц</strong> — акции выросли с 14 800 ₽ до 21 000 ₽ к середине июня.</p>
+                    <p>Причина: шорт-сквиз (покрытие коротких позиций) + эффект buyback’а.</p>
+                    <p>📌 Это один из самых мощных short squeezes на российском рынке в 2020 г.</p>
+                    <p><small>Источник: Московская биржа, отчёт «Норникеля», Cbonds.</small></p>
+                `;
+                const btn = document.getElementById('submitBtn');
+                btn.innerText = '✅ Завершить задание';
+                btn.disabled = false;
+                btn.onclick = () => {
+                    window.location.href = 'tasks-list.html';
+                };
+
             } else if (status === 'incorrect') {
+                isSubmitted = true;
                 updateStatusBadge(false);
-            } else {
-                updateStatusBadge(false);
+                // Восстанавливаем выбор (из localStorage не сохраняется сам выбор — но можно добавить)
+                // Для простоты: просто блокируем всё, фидбек ниже добавим позже
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.add('disabled-option');
+                    if (opt.dataset.value === 'D') opt.classList.add('correct');
+                });
+                // Подсветим последний выбранный (если был) — но для упрощения просто покажем неправильный фидбек
+                document.getElementById('feedback').className = 'feedback incorrect';
+                document.getElementById('feedback').innerHTML = `
+                    <h4>❌ Уже был дан неверный ответ</h4>
+                    <p>Правильный ответ: <strong>D</strong> — рост на <strong>+42%</strong>.</p>
+                    <p>После объявления хедж-фонды начали срочно закрывать шорт-позиции (12% акций!), что создало ажиотажный спрос. Buyback усилил эффект.</p>
+                    <p><small>Источник: Московская биржа, отчёт «Норникеля», Cbonds.</small></p>
+                `;
+                const btn = document.getElementById('submitBtn');
+                btn.innerText = '✅ Завершить задание';
+                btn.disabled = false;
+                btn.onclick = () => {
+                    window.location.href = 'tasks-list.html';
+                };
             }
         });
     </script>

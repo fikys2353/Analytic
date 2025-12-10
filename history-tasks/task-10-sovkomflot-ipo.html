@@ -27,7 +27,17 @@
         .option { background: white; border: 2px solid #e0e0e0; border-radius: 14px; padding: 1rem 1.2rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 0.8rem; }
         .option:hover { border-color: #0D6EFD; background: #f0f8ff; transform: translateX(4px); }
         .option.selected { border-color: #0D6EFD; background: #e6f2ff; box-shadow: 0 4px 12px rgba(13,110,253,0.15); }
+        .option.correct { border-color: #28a745; background: #f0fff4; }
+        .option.incorrect { border-color: #dc3545; background: #fff0f0; }
         .option-letter { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #0D6EFD; color: white; font-weight: 600; flex-shrink: 0; }
+
+        /* 🔒 Новый класс: заблокированный вариант */
+        .disabled-option {
+            opacity: 0.75;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
         .feedback { padding: 1.5rem; border-radius: 16px; margin-top: 1.5rem; display: none; }
         .feedback.correct { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; display: block; }
         .feedback.incorrect { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; display: block; }
@@ -130,8 +140,10 @@
 
     <script>
         let selectedOption = null;
+        let isSubmitted = false;
 
         function selectOption(el) {
+            if (isSubmitted) return; // 🔒 нельзя после отправки
             document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
             el.classList.add('selected');
             selectedOption = el.dataset.value;
@@ -139,12 +151,25 @@
         }
 
         function checkAnswer() {
+            if (isSubmitted) return;
+            isSubmitted = true;
+
             const feedbackEl = document.getElementById('feedback');
             const correctAnswer = 'D';
             const isCorrect = selectedOption === correctAnswer;
 
             localStorage.setItem('task-10-status', isCorrect ? 'correct' : 'incorrect');
             updateStatusBadge(isCorrect);
+
+            // 🔒 Блокируем и подсвечиваем
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.add('disabled-option');
+                if (opt.dataset.value === correctAnswer) {
+                    opt.classList.add('correct');
+                } else if (opt === document.querySelector('.option.selected')) {
+                    opt.classList.add('incorrect');
+                }
+            });
 
             if (isCorrect) {
                 feedbackEl.className = 'feedback correct';
@@ -164,8 +189,11 @@
                 `;
             }
 
-            document.getElementById('submitBtn').innerText = '✅ Завершить задание';
-            document.getElementById('submitBtn').onclick = () => {
+            // Обновляем кнопку
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = '✅ Завершить задание';
+            btn.disabled = false;
+            btn.onclick = () => {
                 let progress = parseInt(localStorage.getItem('historyTasksProgress') || '0');
                 if (progress < 10) {
                     localStorage.setItem('historyTasksProgress', '10');
@@ -191,11 +219,52 @@
             }
         }
 
+        // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', () => {
             const status = localStorage.getItem('task-10-status');
-            if (status === 'correct') updateStatusBadge(true);
-            else if (status === 'incorrect') updateStatusBadge(false);
-            else updateStatusBadge(false);
+
+            if (status === 'correct') {
+                isSubmitted = true;
+                updateStatusBadge(true);
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.add('disabled-option');
+                    if (opt.dataset.value === 'D') opt.classList.add('correct');
+                });
+                document.getElementById('feedback').className = 'feedback correct';
+                document.getElementById('feedback').innerHTML = `
+                    <h4>✅ Верно!</h4>
+                    <p><strong>↑ +28,1%</strong> — цена достигла <strong>₽410</strong> к концу октября 2021 г.</p>
+                    <p>Причина: рост фрахтовых ставок на танкеры (+300% за год), высокий спрос на нефть, сильные финансовые показатели компании.</p>
+                    <p><small>Источник: Московская биржа, отчёт «Совкомфлота», Bloomberg.</small></p>
+                `;
+                const btn = document.getElementById('submitBtn');
+                btn.innerText = '✅ Завершить задание';
+                btn.disabled = false;
+                btn.onclick = () => {
+                    window.location.href = 'tasks-list.html';
+                };
+
+            } else if (status === 'incorrect') {
+                isSubmitted = true;
+                updateStatusBadge(false);
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.add('disabled-option');
+                    if (opt.dataset.value === 'D') opt.classList.add('correct');
+                });
+                document.getElementById('feedback').className = 'feedback incorrect';
+                document.getElementById('feedback').innerHTML = `
+                    <h4>❌ Уже был дан неверный ответ</h4>
+                    <p>Правильный ответ: <strong>D</strong> — рост на <strong>+28%</strong> до ₽410.</p>
+                    <p>IPO «Совкомфлота» стало одним из самых успешных в России в 2021 г. благодаря сильной фундаментальной подоплёке.</p>
+                    <p><small>Источник: Московская биржа, отчёт «Совкомфлота», Bloomberg.</small></p>
+                `;
+                const btn = document.getElementById('submitBtn');
+                btn.innerText = '✅ Завершить задание';
+                btn.disabled = false;
+                btn.onclick = () => {
+                    window.location.href = 'tasks-list.html';
+                };
+            }
         });
     </script>
 </body>

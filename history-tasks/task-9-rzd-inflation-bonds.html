@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* ... (полностью как в task-5) ... */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito', sans-serif; }
         body { background: #F8FCFF; color: #333; padding: 1.5rem; }
         .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.06); overflow: hidden; }
@@ -28,7 +27,17 @@
         .option { background: white; border: 2px solid #e0e0e0; border-radius: 14px; padding: 1rem 1.2rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 0.8rem; }
         .option:hover { border-color: #007BFF; background: #f0f8ff; transform: translateX(4px); }
         .option.selected { border-color: #007BFF; background: #e6f2ff; box-shadow: 0 4px 12px rgba(0,123,255,0.15); }
+        .option.correct { border-color: #28a745; background: #f0fff4; }
+        .option.incorrect { border-color: #dc3545; background: #fff0f0; }
         .option-letter { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #007BFF; color: white; font-weight: 600; flex-shrink: 0; }
+
+        /* 🔒 Новый класс: заблокированный вариант */
+        .disabled-option {
+            opacity: 0.75;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
         .feedback { padding: 1.5rem; border-radius: 16px; margin-top: 1.5rem; display: none; }
         .feedback.correct { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; display: block; }
         .feedback.incorrect { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; display: block; }
@@ -132,8 +141,10 @@
 
     <script>
         let selectedOption = null;
+        let isSubmitted = false;
 
         function selectOption(el) {
+            if (isSubmitted) return; // 🔒 нельзя после отправки
             document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
             el.classList.add('selected');
             selectedOption = el.dataset.value;
@@ -141,12 +152,25 @@
         }
 
         function checkAnswer() {
+            if (isSubmitted) return;
+            isSubmitted = true;
+
             const feedbackEl = document.getElementById('feedback');
             const correctAnswer = 'B';
             const isCorrect = selectedOption === correctAnswer;
 
             localStorage.setItem('task-9-status', isCorrect ? 'correct' : 'incorrect');
             updateStatusBadge(isCorrect);
+
+            // 🔒 Блокируем и подсвечиваем
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.add('disabled-option');
+                if (opt.dataset.value === correctAnswer) {
+                    opt.classList.add('correct');
+                } else if (opt === document.querySelector('.option.selected')) {
+                    opt.classList.add('incorrect');
+                }
+            });
 
             if (isCorrect) {
                 feedbackEl.className = 'feedback correct';
@@ -166,8 +190,11 @@
                 `;
             }
 
-            document.getElementById('submitBtn').innerText = '✅ Завершить задание';
-            document.getElementById('submitBtn').onclick = () => {
+            // Обновляем кнопку
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = '✅ Завершить задание';
+            btn.disabled = false;
+            btn.onclick = () => {
                 let progress = parseInt(localStorage.getItem('historyTasksProgress') || '0');
                 if (progress < 9) {
                     localStorage.setItem('historyTasksProgress', '9');
@@ -193,11 +220,52 @@
             }
         }
 
+        // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', () => {
             const status = localStorage.getItem('task-9-status');
-            if (status === 'correct') updateStatusBadge(true);
-            else if (status === 'incorrect') updateStatusBadge(false);
-            else updateStatusBadge(false);
+
+            if (status === 'correct') {
+                isSubmitted = true;
+                updateStatusBadge(true);
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.add('disabled-option');
+                    if (opt.dataset.value === 'B') opt.classList.add('correct');
+                });
+                document.getElementById('feedback').className = 'feedback correct';
+                document.getElementById('feedback').innerHTML = `
+                    <h4>✅ Верно!</h4>
+                    <p><strong>ОФЗ-ИН защищают от инфляции</strong> — купон = инфляция + фиксированная надбавка.</p>
+                    <p>В марте 2022 г. инфляция была ~20%, поэтому доходность превышала 21% — в 2 раза выше обычных ОФЗ.</p>
+                    <p><small>Источник: ЦБ РФ, Мосбиржа, отчёт РЖД.</small></p>
+                `;
+                const btn = document.getElementById('submitBtn');
+                btn.innerText = '✅ Завершить задание';
+                btn.disabled = false;
+                btn.onclick = () => {
+                    window.location.href = 'tasks-list.html';
+                };
+
+            } else if (status === 'incorrect') {
+                isSubmitted = true;
+                updateStatusBadge(false);
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.add('disabled-option');
+                    if (opt.dataset.value === 'B') opt.classList.add('correct');
+                });
+                document.getElementById('feedback').className = 'feedback incorrect';
+                document.getElementById('feedback').innerHTML = `
+                    <h4>❌ Уже был дан неверный ответ</h4>
+                    <p>Правильный ответ: <strong>B</strong> — защита от инфляции.</p>
+                    <p>В условиях высокой инфляции инвесторы ищут активы, сохраняющие покупательную способность. ОФЗ-ИН — один из немногих таких инструментов в РФ.</p>
+                    <p><small>Источник: ЦБ РФ, Мосбиржа, отчёт РЖД.</small></p>
+                `;
+                const btn = document.getElementById('submitBtn');
+                btn.innerText = '✅ Завершить задание';
+                btn.disabled = false;
+                btn.onclick = () => {
+                    window.location.href = 'tasks-list.html';
+                };
+            }
         });
     </script>
 </body>

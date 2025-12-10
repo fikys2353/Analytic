@@ -27,7 +27,17 @@
         .option { background: white; border: 2px solid #e0e0e0; border-radius: 14px; padding: 1rem 1.2rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 0.8rem; }
         .option:hover { border-color: #007BFF; background: #f0f8ff; transform: translateX(4px); }
         .option.selected { border-color: #007BFF; background: #e6f2ff; box-shadow: 0 4px 12px rgba(0,123,255,0.15); }
+        .option.correct { border-color: #28a745; background: #f0fff4; }
+        .option.incorrect { border-color: #dc3545; background: #fff0f0; }
         .option-letter { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #007BFF; color: white; font-weight: 600; flex-shrink: 0; }
+
+        /* 🔒 Новый класс: заблокированный вариант */
+        .disabled-option {
+            opacity: 0.75;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
         .feedback { padding: 1.5rem; border-radius: 16px; margin-top: 1.5rem; display: none; }
         .feedback.correct { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; display: block; }
         .feedback.incorrect { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; display: block; }
@@ -129,8 +139,10 @@
 
     <script>
         let selectedOption = null;
+        let isSubmitted = false;
 
         function selectOption(el) {
+            if (isSubmitted) return; // 🔒 нельзя после отправки
             document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
             el.classList.add('selected');
             selectedOption = el.dataset.value;
@@ -138,12 +150,25 @@
         }
 
         function checkAnswer() {
+            if (isSubmitted) return;
+            isSubmitted = true;
+
             const feedbackEl = document.getElementById('feedback');
             const correctAnswer = 'C';
             const isCorrect = selectedOption === correctAnswer;
 
             localStorage.setItem('task-6-status', isCorrect ? 'correct' : 'incorrect');
             updateStatusBadge(isCorrect);
+
+            // 🔒 Блокируем и подсвечиваем
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.add('disabled-option');
+                if (opt.dataset.value === correctAnswer) {
+                    opt.classList.add('correct');
+                } else if (opt === document.querySelector('.option.selected')) {
+                    opt.classList.add('incorrect');
+                }
+            });
 
             if (isCorrect) {
                 feedbackEl.className = 'feedback correct';
@@ -163,8 +188,11 @@
                 `;
             }
 
-            document.getElementById('submitBtn').innerText = '✅ Завершить задание';
-            document.getElementById('submitBtn').onclick = () => {
+            // Обновляем кнопку
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = '✅ Завершить задание';
+            btn.disabled = false;
+            btn.onclick = () => {
                 let progress = parseInt(localStorage.getItem('historyTasksProgress') || '0');
                 if (progress < 6) {
                     localStorage.setItem('historyTasksProgress', '6');
@@ -190,11 +218,52 @@
             }
         }
 
+        // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', () => {
             const status = localStorage.getItem('task-6-status');
-            if (status === 'correct') updateStatusBadge(true);
-            else if (status === 'incorrect') updateStatusBadge(false);
-            else updateStatusBadge(false);
+
+            if (status === 'correct') {
+                isSubmitted = true;
+                updateStatusBadge(true);
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.add('disabled-option');
+                    if (opt.dataset.value === 'C') opt.classList.add('correct');
+                });
+                document.getElementById('feedback').className = 'feedback correct';
+                document.getElementById('feedback').innerHTML = `
+                    <h4>✅ Верно!</h4>
+                    <p><strong>↑ +8,3%</strong> — акции выросли до ₽4 600.</p>
+                    <p>Причина: уход из Венесуэлы снизил экспозицию к санкциям. Рынок оценил это как снижение рисков.</p>
+                    <p><small>Источник: Московская биржа, отчёт ЛУКОЙЛа, Reuters.</small></p>
+                `;
+                const btn = document.getElementById('submitBtn');
+                btn.innerText = '✅ Завершить задание';
+                btn.disabled = false;
+                btn.onclick = () => {
+                    window.location.href = 'tasks-list.html';
+                };
+
+            } else if (status === 'incorrect') {
+                isSubmitted = true;
+                updateStatusBadge(false);
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.add('disabled-option');
+                    if (opt.dataset.value === 'C') opt.classList.add('correct');
+                });
+                document.getElementById('feedback').className = 'feedback incorrect';
+                document.getElementById('feedback').innerHTML = `
+                    <h4>❌ Уже был дан неверный ответ</h4>
+                    <p>Правильный ответ: <strong>C</strong> — рост на <strong>+8%</strong>.</p>
+                    <p>Несмотря на убыток от сделки, инвесторы посчитали, что дальнейшее участие было бы рискованнее.</p>
+                    <p><small>Источник: Московская биржа, отчёт ЛУКОЙЛа, Reuters.</small></p>
+                `;
+                const btn = document.getElementById('submitBtn');
+                btn.innerText = '✅ Завершить задание';
+                btn.disabled = false;
+                btn.onclick = () => {
+                    window.location.href = 'tasks-list.html';
+                };
+            }
         });
     </script>
 </body>

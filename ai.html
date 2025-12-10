@@ -51,7 +51,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            color: #4285f4;
+            color: #ffffff;
             text-decoration: none;
             font-weight: 600;
             font-size: 0.9rem;
@@ -91,52 +91,36 @@
             text-overflow: ellipsis;
         }
 
-        /* Правая часть: прогресс + сброс */
+        /* Правая часть: новый прогресс-бар */
         .header-right {
             display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 0.25rem;
-            width: 100%;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
         }
+
+        .progress-flag {
+            font-size: 1.5rem;
+            color: #ffffff;
+        }
+
+        .progress-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
         @media (min-width: 600px) {
             .header-right {
-                width: auto;
-                flex-direction: row;
-                align-items: center;
+                padding: 0.5rem 1.25rem;
                 gap: 0.75rem;
             }
-        }
-
-        .progress-bar {
-            height: 6px;
-            background: #e0e0e0;
-            border-radius: 3px;
-            width: 100%;
-            max-width: 200px;
-        }
-        .progress-fill {
-            height: 100%;
-            background: white;
-            border-radius: 3px;
-            transition: width 0.4s ease;
-        }
-
-        .reset-btn {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-        }
-        .reset-btn:hover {
-            background: rgba(255,255,255,0.3);
+            .progress-text {
+                font-size: 1.1rem;
+            }
         }
 
         /* === СПИСОК ЗАДАНИЙ === */
@@ -458,15 +442,8 @@
             </div>
 
             <div class="header-right">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-                <div style="display:flex;align-items:center;gap:0.5rem;">
-                    <span id="progressInfo" style="font-size:0.85rem;color:white;"></span>
-                    <button class="reset-btn" id="btnReset" title="Сбросить прогресс">
-                        <i class="fas fa-redo"></i>
-                    </button>
-                </div>
+                <i class="fas fa-flag progress-flag"></i>
+                <span class="progress-text" id="progressText">0 / 7</span>
             </div>
         </header>
 
@@ -498,11 +475,6 @@
     </div>
 
     <script>
-        // ... (весь JS-код из предыдущей версии — без изменений)
-        // === Здесь вставляем ТОТ ЖЕ САМЫЙ JS, что был выше (от const tasks = [...] до renderTaskList(); updateUI();) ===
-        // Для краткости не дублирую — он полностью совместим и работает как раньше
-        // (в реальном файле просто скопируйте JS из предыдущего ответа целиком сюда)
-        
         const tasks = [
             {
                 id: 1,
@@ -636,10 +608,9 @@
             const progress = loadProgress();
             const completed = Object.keys(progress).length;
             const total = tasks.length;
-            const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-            document.getElementById('progressInfo').textContent = `${completed}/${total} решено`;
-            document.getElementById('progressFill').style.width = `${percent}%`;
+            // Обновляем прогресс-текст в шапке
+            document.getElementById('progressText').textContent = `${completed} / ${total}`;
 
             // Обновляем бейджи
             document.querySelectorAll('.task-card').forEach(card => {
@@ -822,15 +793,6 @@
         btnNextDetail.onclick = () => {
             if (currentTaskIndex < tasks.length - 1) {
                 showTask(currentTaskIndex + 1);
-            }
-        };
-
-        // Сброс
-        document.getElementById('btnReset').onclick = function() {
-            if (confirm('Сбросить весь прогресс?')) {
-                localStorage.removeItem(STORAGE_KEY);
-                updateUI();
-                renderTaskList();
             }
         };
 

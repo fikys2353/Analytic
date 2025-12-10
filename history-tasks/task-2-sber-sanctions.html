@@ -158,6 +158,13 @@
             flex-shrink: 0;
         }
 
+        /* 🔒 Новый класс: заблокированный вариант */
+        .disabled-option {
+            opacity: 0.75;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
         .feedback {
             padding: 1.5rem;
             border-radius: 16px;
@@ -205,7 +212,7 @@
             box-shadow: 0 8px 20px rgba(0,123,255,0.3);
         }
 
-        /* Анимация бейджа */
+        /* Анимации */
         @keyframes fadeInScale {
             0% { opacity: 0; transform: scale(0.8); }
             100% { opacity: 1; transform: scale(1); }
@@ -258,51 +265,40 @@
                 </ul>
             </div>
 
-<div class="chart-container">
-    <div class="chart-title">Динамика акций SBER (февраль–май 2014)</div>
-    <div style="background: #f8fcff; padding: 1.5rem; border-radius: 12px; text-align: center;">
-        <svg width="100%" height="200" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
-            <!-- Ось Y -->
-            <line x1="60" y1="20" x2="60" y2="180" stroke="#ccc" stroke-width="1"/>
-            <!-- Ось X -->
-            <line x1="60" y1="180" x2="380" y2="180" stroke="#ccc" stroke-width="1"/>
-
-            <!-- Сетка -->
-            <line x1="60" y1="150" x2="380" y2="150" stroke="#e0e0e0" stroke-dasharray="4 4"/>
-            <line x1="60" y1="120" x2="380" y2="120" stroke="#e0e0e0" stroke-dasharray="4 4"/>
-            <line x1="60" y1="90" x2="380" y2="90" stroke="#e0e0e0" stroke-dasharray="4 4"/>
-            <line x1="60" y1="60" x2="380" y2="60" stroke="#e0e0e0" stroke-dasharray="4 4"/>
-
-            <!-- Линия цены -->
-            <polyline 
-                points="60,120 140,150 220,90 300,60" 
-                fill="none" 
-                stroke="#007BFF" 
-                stroke-width="3"
-            />
-
-            <!-- Маркер события -->
-            <circle cx="140" cy="150" r="5" fill="#dc3545" stroke="white" stroke-width="2"/>
-            <text x="140" y="165" font-size="10" fill="#dc3545" text-anchor="middle">20 марта</text>
-
-            <!-- Подписи осей -->
-            <text x="40" y="150" font-size="10" fill="#555" text-anchor="end">90 руб.</text>
-            <text x="40" y="120" font-size="10" fill="#555" text-anchor="end">100 руб.</text>
-            <text x="40" y="90" font-size="10" fill="#555" text-anchor="end">110 руб.</text>
-            <text x="40" y="60" font-size="10" fill="#555" text-anchor="end">120 руб.</text>
-            <text x="40" y="180" font-size="10" fill="#555" text-anchor="end">80 руб.</text>
-
-            <text x="60" y="195" font-size="10" fill="#555" text-anchor="start">1 фев</text>
-            <text x="140" y="195" font-size="10" fill="#555" text-anchor="middle">20 мар</text>
-            <text x="220" y="195" font-size="10" fill="#555" text-anchor="middle">1 апр</text>
-            <text x="300" y="195" font-size="10" fill="#555" text-anchor="middle">1 мая</text>
-        </svg>
-        <p style="margin-top: 1rem; font-size: 0.85rem; color: #666; text-align: left; padding-left: 1rem;">
-            <i class="fas fa-thumbtack" style="color: #dc3545;"></i> 
-            <strong>Данные:</strong> Московская биржа, ЦБ РФ. График упрощён для наглядности.
-        </p>
-    </div>
-</div>
+            <div class="chart-container">
+                <div class="chart-title">Динамика акций SBER (февраль–май 2014)</div>
+                <div style="background: #f8fcff; padding: 1.5rem; border-radius: 12px; text-align: center;">
+                    <svg width="100%" height="200" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
+                        <line x1="60" y1="20" x2="60" y2="180" stroke="#ccc" stroke-width="1"/>
+                        <line x1="60" y1="180" x2="380" y2="180" stroke="#ccc" stroke-width="1"/>
+                        <line x1="60" y1="150" x2="380" y2="150" stroke="#e0e0e0" stroke-dasharray="4 4"/>
+                        <line x1="60" y1="120" x2="380" y2="120" stroke="#e0e0e0" stroke-dasharray="4 4"/>
+                        <line x1="60" y1="90" x2="380" y2="90" stroke="#e0e0e0" stroke-dasharray="4 4"/>
+                        <line x1="60" y1="60" x2="380" y2="60" stroke="#e0e0e0" stroke-dasharray="4 4"/>
+                        <polyline 
+                            points="60,120 140,150 220,90 300,60" 
+                            fill="none" 
+                            stroke="#007BFF" 
+                            stroke-width="3"
+                        />
+                        <circle cx="140" cy="150" r="5" fill="#dc3545" stroke="white" stroke-width="2"/>
+                        <text x="140" y="165" font-size="10" fill="#dc3545" text-anchor="middle">20 марта</text>
+                        <text x="40" y="150" font-size="10" fill="#555" text-anchor="end">90 руб.</text>
+                        <text x="40" y="120" font-size="10" fill="#555" text-anchor="end">100 руб.</text>
+                        <text x="40" y="90" font-size="10" fill="#555" text-anchor="end">110 руб.</text>
+                        <text x="40" y="60" font-size="10" fill="#555" text-anchor="end">120 руб.</text>
+                        <text x="40" y="180" font-size="10" fill="#555" text-anchor="end">80 руб.</text>
+                        <text x="60" y="195" font-size="10" fill="#555" text-anchor="start">1 фев</text>
+                        <text x="140" y="195" font-size="10" fill="#555" text-anchor="middle">20 мар</text>
+                        <text x="220" y="195" font-size="10" fill="#555" text-anchor="middle">1 апр</text>
+                        <text x="300" y="195" font-size="10" fill="#555" text-anchor="middle">1 мая</text>
+                    </svg>
+                    <p style="margin-top: 1rem; font-size: 0.85rem; color: #666; text-align: left; padding-left: 1rem;">
+                        <i class="fas fa-thumbtack" style="color: #dc3545;"></i> 
+                        <strong>Данные:</strong> Московская биржа, ЦБ РФ. График упрощён для наглядности.
+                    </p>
+                </div>
+            </div>
 
             <div class="question-box">
                 <h3>Вопрос</h3>
@@ -338,8 +334,10 @@
 
     <script>
         let selectedOption = null;
+        let isSubmitted = false;
 
         function selectOption(el) {
+            if (isSubmitted) return; // 🔒 нельзя после отправки
             document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
             el.classList.add('selected');
             selectedOption = el.dataset.value;
@@ -347,12 +345,25 @@
         }
 
         function checkAnswer() {
+            if (isSubmitted) return;
+            isSubmitted = true;
+
             const feedbackEl = document.getElementById('feedback');
             const correctAnswer = 'D';
             const isCorrect = selectedOption === correctAnswer;
 
             localStorage.setItem('task-2-status', isCorrect ? 'correct' : 'incorrect');
             updateStatusBadge(isCorrect);
+
+            // 🔒 Блокируем и подсвечиваем варианты
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.add('disabled-option');
+                if (opt.dataset.value === correctAnswer) {
+                    opt.classList.add('correct');
+                } else if (opt === document.querySelector('.option.selected')) {
+                    opt.classList.add('incorrect');
+                }
+            });
 
             if (isCorrect) {
                 feedbackEl.className = 'feedback correct';
@@ -373,8 +384,11 @@
                 `;
             }
 
-            document.getElementById('submitBtn').innerText = '✅ Завершить задание';
-            document.getElementById('submitBtn').onclick = () => {
+            // Обновляем кнопку
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = '✅ Завершить задание';
+            btn.disabled = false;
+            btn.onclick = () => {
                 let progress = parseInt(localStorage.getItem('historyTasksProgress') || '0');
                 if (progress < 2) {
                     localStorage.setItem('historyTasksProgress', '2');
@@ -402,14 +416,53 @@
             }
         }
 
+        // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', () => {
             const status = localStorage.getItem('task-2-status');
+
             if (status === 'correct') {
+                isSubmitted = true;
                 updateStatusBadge(true);
+                // Восстанавливаем состояния
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.add('disabled-option');
+                    if (opt.dataset.value === 'D') opt.classList.add('correct');
+                });
+                document.getElementById('feedback').className = 'feedback correct';
+                document.getElementById('feedback').innerHTML = `
+                    <h4>✅ Верно!</h4>
+                    <p><strong>↓ –30% в первые 2 недели</strong>, затем <strong>↑ +45% за 2 месяца</strong> (с 70 до 102 руб.).</p>
+                    <p>Причина: паника → затем рынок оценил силу господдержки и внутренний потенциал банка.</p>
+                    <p>📌 Это пример того, как политические риски могут быть переоценены рынком.</p>
+                    <p><small>Источник: Московская биржа, ЦБ РФ, отчёты Сбербанка.</small></p>
+                `;
+                const btn = document.getElementById('submitBtn');
+                btn.innerText = '✅ Завершить задание';
+                btn.disabled = false;
+                btn.onclick = () => {
+                    window.location.href = 'tasks-list.html';
+                };
+
             } else if (status === 'incorrect') {
+                isSubmitted = true;
                 updateStatusBadge(false);
-            } else {
-                updateStatusBadge(false);
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.add('disabled-option');
+                    if (opt.dataset.value === 'D') opt.classList.add('correct');
+                });
+                document.getElementById('feedback').className = 'feedback incorrect';
+                document.getElementById('feedback').innerHTML = `
+                    <h4>❌ Уже был дан неверный ответ</h4>
+                    <p>Правильный ответ: <strong>D</strong> — сначала падение на <strong>–30%</strong>, потом восстановление на <strong>+45%</strong>.</p>
+                    <p>После санкций ЦБ РФ начал покупать акции банков, что дало сигнал рынку — «государство не даст обрушиться системе».</p>
+                    <p><small>Источник: Московская биржа, ЦБ РФ, отчёты Сбербанка.</small></p>
+                `;
+                const btn = document.getElementById('submitBtn');
+                btn.innerText = '✅ Завершить задание';
+                btn.disabled = false;
+                btn.onclick = () => {
+                    window.location.href = 'tasks-list.html';
+                };
             }
         });
     </script>
