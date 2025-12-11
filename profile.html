@@ -156,10 +156,10 @@
             background: #d0e6fb;
         }
 
-        /* Статистика */
+        /* Статистика — 3 карточки */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1.5rem;
             margin: 2rem 0;
         }
@@ -180,14 +180,12 @@
 
         .stat-card i {
             font-size: 1.8rem;
-            color: #007BFF;
             margin-bottom: 0.8rem;
         }
 
         .stat-card .value {
             font-size: 1.7rem;
             font-weight: 700;
-            color: #007BFF;
             display: block;
         }
 
@@ -195,6 +193,11 @@
             font-size: 0.95rem;
             color: #555;
         }
+
+        /* Цвета иконок */
+        .icon-total { color: #007BFF; }
+        .icon-done { color: #28a745; }
+        .icon-wrong { color: #dc3545; }
 
         /* Прогресс */
         .progress-section {
@@ -389,6 +392,9 @@
             .profile-card {
                 padding: 2rem 1.5rem;
             }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
             .avatar-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -411,31 +417,21 @@
             <div class="avatar" id="edit-avatar-trigger">
                 <i id="avatar-icon" class="fas fa-user"></i>
             </div>
-            <h2 id="profile-name">Анна Петрова</h2>
+            <h2 id="profile-name">—</h2>
             <p class="subtitle" id="profile-level-path">Уровень: Новичок | Образовательный путь: Финансовая грамотность</p>
             <button class="edit-btn" id="edit-profile-btn">✏️ Редактировать профиль</button>
 
-            <!-- Статистика -->
+            <!-- Новая статистика: Всего / Выполнено / Сделано с ошибкой -->
             <div class="stats-grid">
                 <div class="stat-card fade-in">
-                    <i class="fas fa-star"></i>
-                    <span class="value" id="stat-experience">24</span>
-                    <span class="label">Опыт</span>
+                    <i class="fas fa-check-circle icon-done"></i>
+                    <span class="value" id="stat-done">0</span>
+                    <span class="label">Выполнено</span>
                 </div>
                 <div class="stat-card fade-in">
-                    <i class="fas fa-trophy"></i>
-                    <span class="value" id="stat-tasks">3</span>
-                    <span class="label">Завершено заданий</span>
-                </div>
-                <div class="stat-card fade-in">
-                    <i class="fas fa-coins"></i>
-                    <span class="value" id="stat-capital">12 500₽</span>
-                    <span class="label">Вирт. капитал</span>
-                </div>
-                <div class="stat-card fade-in">
-                    <i class="fas fa-chart-line"></i>
-                    <span class="value" id="stat-profit">+8.2%</span>
-                    <span class="label">Доходность</span>
+                    <i class="fas fa-times-circle icon-wrong"></i>
+                    <span class="value" id="stat-wrong">0</span>
+                    <span class="label">Сделано с ошибкой</span>
                 </div>
             </div>
 
@@ -445,28 +441,28 @@
                 <div class="progress-item">
                     <div class="progress-header">
                         <span id="course-1-name">Исторические задания</span>
-                        <span id="course-1-percent">100%</span>
+                        <span id="course-1-percent">0%</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" id="course-1-fill" style="width: 100%"></div>
+                        <div class="progress-fill" id="course-1-fill" style="width: 0%"></div>
                     </div>
                 </div>
                 <div class="progress-item">
                     <div class="progress-header">
-                        <span id="course-2-name">Анализ рынка</span>
-                        <span id="course-2-percent">65%</span>
+                        <span id="course-2-name">Математические модели</span>
+                        <span id="course-2-percent">0%</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" id="course-2-fill" style="width: 65%"></div>
+                        <div class="progress-fill" id="course-2-fill" style="width: 0%"></div>
                     </div>
                 </div>
                 <div class="progress-item">
                     <div class="progress-header">
-                        <span id="course-3-name">Портфельное управление</span>
-                        <span id="course-3-percent">30%</span>
+                        <span id="course-3-name">Принятие решений</span>
+                        <span id="course-3-percent">0%</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" id="course-3-fill" style="width: 30%"></div>
+                        <div class="progress-fill" id="course-3-fill" style="width: 0%"></div>
                     </div>
                 </div>
             </div>
@@ -485,8 +481,8 @@
             <h2>Редактировать профиль</h2>
 
             <div class="form-group">
-                <label>Имя</label>
-                <input type="text" id="edit-name" placeholder="Введите имя">
+                <label>Имя *</label>
+                <input type="text" id="edit-name" placeholder="Введите имя" required>
             </div>
 
             <div class="form-group">
@@ -519,18 +515,12 @@
     </div>
 
     <script>
-        // === DEFAULT PROFILE (без курсов) ===
+        // === DEFAULT PROFILE ===
         const DEFAULT_PROFILE = {
-            name: "Анна Петрова",
+            name: "",
             level: "Новичок",
             path: "Финансовая грамотность",
-            avatarClass: "fa-user",
-            stats: {
-                experience: 24,
-                tasks: 0,
-                capital: 12500,
-                profit: 8.2
-            }
+            avatarClass: "fa-user"
         };
 
         const AVATAR_ICONS = [
@@ -539,31 +529,74 @@
             "fa-rocket", "fa-lightbulb", "fa-star", "fa-award"
         ];
 
-        // === ТОЧНАЯ ФУНКЦИЯ ПОДСЧЁТА ПРОГРЕССА ===
+        // === ПОДСЧЁТ СТАТИСТИКИ ПО ЗАДАНИЯМ ===
+        function getTaskStats() {
+            let total = 0, done = 0, wrong = 0;
+
+            // История — 10 заданий
+            for (let i = 1; i <= 10; i++) {
+                const status = localStorage.getItem(`task-${i}-status`);
+                total++;
+                if (status === 'correct') done++;
+                else if (status === 'incorrect') wrong++;
+                // null / undefined — игнорируем (считаем как "не начато", не учитываем в wrong)
+            }
+
+            // Матмодели
+            const mathTotal = parseInt(localStorage.getItem('math-total') || '5');
+            for (let i = 0; i < mathTotal; i++) {
+                const status = localStorage.getItem(`mathModelsTaskStatus-${i}`);
+                total++;
+                if (status === 'correct') done++;
+                else if (status === 'incorrect') wrong++;
+            }
+
+            // ИИ
+            const aiTotal = parseInt(localStorage.getItem('ai-total') || '5');
+            try {
+                const raw = localStorage.getItem('tyndex_tasks_progress_v2');
+                if (raw) {
+                    const progress = JSON.parse(raw);
+                    for (let i = 0; i < aiTotal; i++) {
+                        const item = progress[String(i)] || progress[i];
+                        if (item) {
+                            total++;
+                            if (item.status === 'correct') done++;
+                            else if (item.status === 'incorrect') wrong++;
+                        }
+                    }
+                } else {
+                    // Если нет данных — считаем все как не начатые (только total)
+                    total += aiTotal;
+                }
+            } catch (e) {
+                console.warn('Ошибка чтения прогресса ИИ:', e);
+                total += aiTotal;
+            }
+
+            return { total, done, wrong };
+        }
+
+        // === ПРОГРЕСС ПО КУРСАМ ===
         function getCourseProgress() {
-            // История (tasks-list.html): task-1-status, ..., task-10-status
             function getHistoryProgress() {
                 const total = 10;
                 let completed = 0;
                 for (let i = 1; i <= total; i++) {
-                    const status = localStorage.getItem(`task-${i}-status`);
-                    if (status === 'correct') completed++;
+                    if (localStorage.getItem(`task-${i}-status`) === 'correct') completed++;
                 }
                 return { done: completed, total };
             }
 
-            // Матмодель (math.html): mathModelsTaskStatus-0, -1, ..., -N
             function getMathProgress() {
                 const total = parseInt(localStorage.getItem('math-total') || '5');
                 let completed = 0;
                 for (let i = 0; i < total; i++) {
-                    const status = localStorage.getItem(`mathModelsTaskStatus-${i}`);
-                    if (status === 'correct') completed++;
+                    if (localStorage.getItem(`mathModelsTaskStatus-${i}`) === 'correct') completed++;
                 }
                 return { done: completed, total };
             }
 
-            // ИИ (ai.html): tyndex_tasks_progress_v2 → { "1": { status: "correct", ... } }
             function getAIProgress() {
                 const total = parseInt(localStorage.getItem('ai-total') || '5');
                 let completed = 0;
@@ -581,30 +614,14 @@
                 return { done: completed, total };
             }
 
-            const hist = getHistoryProgress();
-            const math = getMathProgress();
-            const ai = getAIProgress();
-
             return [
-                {
-                    name: "Исторические задания",
-                    progress: Math.min(100, Math.round((hist.done / hist.total) * 100)) || 0,
-                    done: hist.done,
-                    total: hist.total
-                },
-                {
-                    name: "Математические модели",
-                    progress: Math.min(100, Math.round((math.done / math.total) * 100)) || 0,
-                    done: math.done,
-                    total: math.total
-                },
-                {
-                    name: "Принятие решений",
-                    progress: Math.min(100, Math.round((ai.done / ai.total) * 100)) || 0,
-                    done: ai.done,
-                    total: ai.total
-                }
-            ];
+                { name: "Исторические задания", ...getHistoryProgress() },
+                { name: "Математические модели", ...getMathProgress() },
+                { name: "Принятие решений", ...getAIProgress() }
+            ].map(c => ({
+                ...c,
+                progress: Math.min(100, Math.round((c.done / c.total) * 100)) || 0
+            }));
         }
 
         // === РАБОТА С ПРОФИЛЕМ ===
@@ -614,12 +631,7 @@
                     name: profile.name,
                     level: profile.level,
                     path: profile.path,
-                    avatarClass: profile.avatarClass,
-                    stats: {
-                        experience: profile.stats.experience,
-                        capital: profile.stats.capital,
-                        profit: profile.stats.profit
-                    }
+                    avatarClass: profile.avatarClass
                 }));
             } catch (e) {
                 console.warn('localStorage недоступен');
@@ -631,36 +643,43 @@
                 const saved = localStorage.getItem('userProfile');
                 let profile = saved ? JSON.parse(saved) : { ...DEFAULT_PROFILE };
 
-                profile.courses = getCourseProgress();
-                const totalCompleted = profile.courses.reduce((sum, c) => sum + c.done, 0);
-                profile.stats.tasks = totalCompleted;
+                const taskStats = getTaskStats();
+                const courses = getCourseProgress();
 
                 window.currentProfile = profile;
 
-                // Обновляем UI
-                document.getElementById('profile-name').textContent = profile.name;
+                // UI: профиль
+                document.getElementById('profile-name').textContent = profile.name || "—";
                 document.getElementById('profile-level-path').textContent = 
                     `Уровень: ${profile.level} | Образовательный путь: ${profile.path}`;
-                document.getElementById('avatar-icon').className = 'fas ' + profile.avatarClass;
+                document.getElementById('avatar-icon').className = 'fas ' + (profile.avatarClass || 'fa-user');
 
-                document.getElementById('stat-experience').textContent = profile.stats.experience;
-                document.getElementById('stat-tasks').textContent = profile.stats.tasks;
-                document.getElementById('stat-capital').textContent = 
-                    profile.stats.capital.toLocaleString('ru-RU') + '₽';
-                document.getElementById('stat-profit').textContent = 
-                    (profile.stats.profit >= 0 ? '+' : '') + profile.stats.profit.toFixed(1) + '%';
+                // UI: статистика
+                document.getElementById('stat-done').textContent = taskStats.done;
+                document.getElementById('stat-wrong').textContent = taskStats.wrong;
 
-                profile.courses.forEach((course, i) => {
+                // UI: прогресс-бары
+                courses.forEach((course, i) => {
                     const n = i + 1;
                     document.getElementById(`course-${n}-name`).textContent = course.name;
                     document.getElementById(`course-${n}-percent`).textContent = course.progress + '%';
                     document.getElementById(`course-${n}-fill`).style.width = course.progress + '%';
                 });
+
+                // Первый заход — имя обязательно
+                if (!profile.name) {
+                    setTimeout(() => {
+                        openEditModal();
+                        document.getElementById('edit-name').focus();
+                    }, 300);
+                }
+
             } catch (e) {
                 console.error('Ошибка загрузки профиля', e);
-                const fallback = { ...DEFAULT_PROFILE, courses: getCourseProgress() };
-                fallback.stats.tasks = fallback.courses.reduce((s, c) => s + c.done, 0);
-                window.currentProfile = fallback;
+                // fallback
+                document.getElementById('stat-done').textContent = 0;
+                document.getElementById('stat-wrong').textContent = 0;
+                window.currentProfile = { ...DEFAULT_PROFILE };
             }
         }
 
@@ -682,9 +701,16 @@
             });
         }
 
+        function validateAndToggleSaveButton() {
+            const name = document.getElementById('edit-name').value.trim();
+            const btn = document.getElementById('save-profile');
+            btn.disabled = !name;
+            btn.style.opacity = name ? '1' : '0.5';
+        }
+
         function openEditModal() {
             const p = window.currentProfile;
-            document.getElementById('edit-name').value = p.name;
+            document.getElementById('edit-name').value = p.name || '';
             document.getElementById('edit-level').value = p.level;
             document.getElementById('edit-path').value = p.path;
 
@@ -694,6 +720,7 @@
             });
 
             document.getElementById('edit-modal').style.display = 'flex';
+            validateAndToggleSaveButton();
         }
 
         function closeEditModal() {
@@ -701,8 +728,15 @@
         }
 
         function saveProfile() {
+            const name = document.getElementById('edit-name').value.trim();
+            if (!name) {
+                alert("Пожалуйста, укажите ваше имя.");
+                document.getElementById('edit-name').focus();
+                return;
+            }
+
             const p = window.currentProfile;
-            p.name = document.getElementById('edit-name').value.trim() || p.name;
+            p.name = name;
             p.level = document.getElementById('edit-level').value;
             p.path = document.getElementById('edit-path').value.trim() || p.path;
             p.avatarClass = window.selectedAvatar || p.avatarClass;
@@ -727,11 +761,13 @@
             document.getElementById('cancel-edit').addEventListener('click', closeEditModal);
             document.getElementById('save-profile').addEventListener('click', saveProfile);
 
+            document.getElementById('edit-name').addEventListener('input', validateAndToggleSaveButton);
+
             window.addEventListener('click', (e) => {
                 if (e.target.id === 'edit-modal') closeEditModal();
             });
 
-            // Реакция на изменения в других вкладках
+            // Обновление при изменении localStorage (включая профиль)
             window.addEventListener('storage', (e) => {
                 const keys = [
                     'task-1-status', 'task-2-status', 'task-3-status', 'task-4-status',
@@ -740,7 +776,8 @@
                     'mathModelsTaskStatus-0', 'mathModelsTaskStatus-1', 'mathModelsTaskStatus-2',
                     'mathModelsTaskStatus-3', 'mathModelsTaskStatus-4',
                     'tyndex_tasks_progress_v2',
-                    'math-total', 'ai-total'
+                    'math-total', 'ai-total',
+                    'userProfile'
                 ];
                 if (keys.includes(e.key)) {
                     loadProfile();
